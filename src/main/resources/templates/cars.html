@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{cars.title}">Машины</title>
+</head>
+<body>
+<div style="text-align: center;">
+    <!-- Ссылки для переключения языка -->
+    <div style="text-align: right;">
+        <a th:href="@{/cars(lang='ru')}" th:text="#{lang.ru}">Русский</a> |
+        <a th:href="@{/cars(lang='en')}" th:text="#{lang.en}">English</a>
+    </div>
+
+    <h2 th:text="#{cars.title}">Машины</h2>
+    <a href="#" th:href="@{/logout}" th:text="#{logout.button}" style="color: green;">Sign Out</a>
+
+    <table border="1" style="width: 60%; margin: 0 auto;">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th th:text="#{cars.make}">Марка</th>
+            <th th:text="#{cars.model}">Модель</th>
+            <th th:text="#{cars.mileage}">Пробег</th>
+            <th th:text="#{cars.price}">Цена</th>
+            <th th:text="#{cars.action}">Действие</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="car : ${cars}">
+            <td th:text="${car.id}">ID</td>
+            <td th:text="${car.make}">Марка</td>
+            <td th:text="${car.model}">Модель</td>
+            <td th:text="${car.mileage}">Пробег</td>
+            <td th:text="${car.price}">Цена</td>
+            <td>
+                <form th:action="@{/cars/delete/{id}(id=${car.id})}" method="post">
+                    <button type="submit" th:text="#{delete.button}">Удалить</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <h3 th:text="#{add.car.title}">Добавить машину</h3>
+    <form th:action="@{/cars/add}" method="post">
+        <div>
+            <label th:text="#{cars.make}">Марка</label>
+            <input type="text" name="make" placeholder="Марка" required />
+        </div>
+        <div>
+            <label th:text="#{cars.model}">Модель</label>
+            <input type="text" name="model" placeholder="Модель" required />
+        </div>
+        <div>
+            <label th:text="#{cars.mileage}">Пробег</label>
+            <input type="number" name="mileage" placeholder="Пробег" required />
+        </div>
+        <div>
+            <label th:text="#{cars.price}">Цена</label>
+            <input type="number" name="price" placeholder="Цена" required />
+        </div>
+        <button type="submit" th:text="#{add.button}">Добавить</button>
+    </form>
+</div>
+</body>
+</html>
