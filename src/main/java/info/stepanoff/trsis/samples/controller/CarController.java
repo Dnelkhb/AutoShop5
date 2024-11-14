@@ -1,7 +1,7 @@
 package info.stepanoff.trsis.samples.controller;
 
 import info.stepanoff.trsis.samples.model.Car;
-import info.stepanoff.trsis.samples.repository.CarRepository;
+import info.stepanoff.trsis.samples.service.CarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,28 +11,32 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/cars")
 public class CarController {
 
+    private final CarService carService;
+
     @Autowired
-    private CarRepository carRepository;
+    public CarController(CarService carService) {
+        this.carService = carService;
+    }
 
     @GetMapping
     public String listCars(Model model) {
-        model.addAttribute("cars", carRepository.findAll());
+        model.addAttribute("cars", carService.findAllCars());
         return "cars";
     }
 
     @PostMapping("/add")
     public String addCar(@RequestParam String make,
-                         @RequestParam String model,
+                         @RequestParam String model,  // исправил имя параметра обратно на "model" для согласованности с HTML
                          @RequestParam int mileage,
                          @RequestParam int price) {
         Car car = new Car(make, model, mileage, price);
-        carRepository.save(car);
+        carService.saveCar(car);
         return "redirect:/cars";
     }
 
     @PostMapping("/delete/{id}")
     public String deleteCar(@PathVariable Long id) {
-        carRepository.deleteById(id);
+        carService.deleteCarById(id);
         return "redirect:/cars";
     }
 }
