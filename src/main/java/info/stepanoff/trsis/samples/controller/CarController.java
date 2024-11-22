@@ -34,9 +34,16 @@ public class CarController {
         return "redirect:/cars";
     }
 
-    @PostMapping("/delete/{id}")
-    public String deleteCar(@PathVariable Long id) {
-        carService.deleteCarById(id);
+    @PostMapping("/delete")
+    public String deleteCar(@RequestParam String make,
+                            @RequestParam String model,
+                            @RequestParam int mileage,
+                            @RequestParam int price) {
+        carService.deleteCar(new Car(make, model, mileage, price));
         return "redirect:/cars";
     }
+
+
+
+
 }

@@ -3,19 +3,29 @@ package info.stepanoff.trsis.samples.model;
 import javax.persistence.*;
 
 @Entity
+@Table(name = "car", uniqueConstraints = @UniqueConstraint(columnNames = "id")) // Добавлена уникальность для столбца id
 public class Car {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String make;
+
+    @Column(nullable = false)
     private String model;
+
+    @Column(nullable = false)
     private int mileage;
+
+    @Column(nullable = false)
     private int price;
 
+    // Конструктор без параметров (обязателен для JPA)
     public Car() {}
 
+    // Конструктор с параметрами
     public Car(String make, String model, int mileage, int price) {
         this.make = make;
         this.model = model;
@@ -27,6 +37,10 @@ public class Car {
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getMake() {
@@ -59,5 +73,17 @@ public class Car {
 
     public void setPrice(int price) {
         this.price = price;
+    }
+
+    // Переопределение метода toString для корректного отображения
+    @Override
+    public String toString() {
+        return "Car{" +
+                "id=" + id +
+                ", make='" + make + '\'' +
+                ", model='" + model + '\'' +
+                ", mileage=" + mileage +
+                ", price=" + price +
+                '}';
     }
 }
